@@ -109,22 +109,19 @@ This is a live multiplayer game to prove the tech skills and knowledge gained du
   - auth.me()
 - Game Service
   - game.create()
-  - game.addPlayer(gameId)
+  - game.addPlayer(gameId) - Socket / Axios
   - game.start(gameId)
   - game.sendQuestion(gameId) - Socket
   - game.getAnswer(gameId) - Socket
   - game.finish(gameId)
 - Player Service
-  - player.joinGame(gameId, playerId) - Scoket
-  - player.startGame(gameId, playerId) - Socket
-  - player.getQuestion(gameId, playerId) - Socket
-  - player.sendAnswer(gameId,playerId) - Socket
-  - player.finishGame(gameId) - Socket
+  - player.updateScore
+  - player.getAll
+  - player.getOne
 - Question Service
   - question.add(QuestionId)
 - User service
   - user.details(id)
-  - user.add(id)
   - user.delete(id)
   - user.modify(id)
 
@@ -191,7 +188,7 @@ This is a live multiplayer game to prove the tech skills and knowledge gained du
 
 | HTTP Method | URL                       | Request Body                                            | Success status | Error Status | Description                                                  |
 | ----------- | ------------------------- | ------------------------------------------------------- | -------------- | ------------ | ------------------------------------------------------------ |
-| GET         | `/auth/profile    `       | Saved session                                           | 200            | 404          | Check if user is logged in and return profile page           |
+| GET         | `/auth/me    `            | Saved session                                           | 200            | 404          | Check if user is logged in and return profile page           |
 | POST        | `/auth/signup`            | {name, email, password}                                 | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
 | POST        | `/auth/login`             | {username, password}                                    | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session |
 | POST        | `/auth/logout`            | (empty)                                                 | 204            | 400          | Logs out the user                                            |
@@ -217,5 +214,7 @@ Add sounds
 Previous games history
 
 Add the ability to choose number of players in a game
+
+Add ADMIN Users
 
 [See the Trello board.](https://trello.com/b/tZ9rgU3H/project3)
