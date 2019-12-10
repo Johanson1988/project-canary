@@ -107,20 +107,19 @@ This is a live multiplayer game to prove the tech skills and knowledge gained du
   - auth.signup(user)
   - auth.logout()
   - auth.me()
-  - auth.getUser() // synchronous
 - Game Service
   - game.create()
-  - game.waiting(gameId)
+  - game.addPlayer(gameId)
   - game.start(gameId)
-  - game.sendQuestion(gameId)
-  - game.getAnswer(gameId)
+  - game.sendQuestion(gameId) - Socket
+  - game.getAnswer(gameId) - Socket
   - game.finish(gameId)
 - Player Service
-  - player.joinGame(gameId, playerId)
-  - player.startGame(gameId, playerId)
-  - player.getQuestion(gameId, playerId)
-  - player.sendAnswer(gameId,playerId)
-  - player.finishGame(gameId)
+  - player.joinGame(gameId, playerId) - Scoket
+  - player.startGame(gameId, playerId) - Socket
+  - player.getQuestion(gameId, playerId) - Socket
+  - player.sendAnswer(gameId,playerId) - Socket
+  - player.finishGame(gameId) - Socket
 - Question Service
   - question.add(QuestionId)
 - User service
