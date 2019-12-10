@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// questions: [Question ObjectID],
-// players: [Player ObjectID],
-// winner: Player ObjectID,
-// createdBy: User ObjectID,
-// scoreboard: {player:score}
-// started: Boolean,
-// finished: Boolean,
 
 const userSchema = new Schema({
     name: {type:String, required:true},
