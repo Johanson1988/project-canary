@@ -6,13 +6,10 @@ const {
     isLoggedIn,
     isNotLoggedIn,
     validationLoggin,
+    validationGame
   } = require('../../helpers/middlewares');
 
 
-  router.post('/', isLoggedIn, (req, res, next) => {
-    res
-        .status(200)
-        .json({hola:'dola'});
-  });
+  router.use('/', isLoggedIn,validationGame, require('./game'));
 
 module.exports = router;
