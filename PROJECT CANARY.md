@@ -2,7 +2,7 @@ PROJECT 3
 
 # PROJECT CANARY
 
-
+<img width="1019" alt="Screen Shot 2019-12-10 at 3 14 20 PM" src="https://user-images.githubusercontent.com/52801554/70536838-c342cf00-1b5f-11ea-91eb-c82e84d1796e.png">
 
 ## Description
 
