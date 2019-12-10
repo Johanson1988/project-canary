@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 //         picture: String, //(cloudinary)
 //         BACKLOG(difficulty: enum[easy,hard])
 
-const userSchema = new Schema({
+const questionSchema = new Schema({
     questionType: {type:String, enum:['data','webdev', 'ux'], required: true}, //TODO update readme name
     rightAnswer: {type: String, required: true},
     wrongAnswer1: {type:String, required: true}, //TODO update this on readme
@@ -24,6 +24,6 @@ const userSchema = new Schema({
     },
   });
   
-  const User = mongoose.model('User', userSchema);
+  const Question = mongoose.model('Question', questionSchema);
   
-  module.exports = User;
+  module.exports = Question;

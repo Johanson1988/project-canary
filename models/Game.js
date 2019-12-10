@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const userSchema = new Schema({
+const gameSchema = new Schema({
     name: {type:String, required:true},
     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question'}], //TODO do this required and populate when we have questions
     players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player'}],
@@ -18,6 +18,6 @@ const userSchema = new Schema({
     },
   });
   
-  const Game = mongoose.model('Game', userSchema);
+  const Game = mongoose.model('Game', gameSchema);
   
   module.exports = Game;
