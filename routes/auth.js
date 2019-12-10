@@ -90,4 +90,4 @@ router.get('/private', isLoggedIn, (req, res, next) => {
 });
 
 
-module.exports = router;
+module.exports = router;  

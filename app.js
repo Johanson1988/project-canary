@@ -9,7 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
-const auth = require('./routes/auth');
+//const auth = require('./routes/auth');
 
 
 // MONGOOSE CONNECTION
@@ -67,7 +67,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ROUTER MIDDLEWARE
-app.use('/auth', auth);
+const router = require('./routes/index');
+app.use('/', router);
+//app.use('/auth', auth); TODO Delete
 
 
 // ERROR HANDLING
