@@ -16,3 +16,10 @@ exports.validationLoggin = (req, res, next) => {
   if (!username || !password) next(createError(400));
   else next();
 };
+
+exports.validationGame = (req, res, next) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) next(createError(400));
+  else next();
+};
