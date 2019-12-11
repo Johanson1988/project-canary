@@ -48,8 +48,7 @@ router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) =>
 );
 
 // upload Image
-router.post('/signup/image', parser.single('photo'), (req, res, next) => {
-  console.log('file upload');
+router.post('/signup/image',parser.single('photo'), (req, res, next) => {
   if (!req.file) {
     next(new Error('No file uploaded!'));
   };
@@ -68,7 +67,6 @@ router.post('/signup', isNotLoggedIn, validationLoggin, async (req, res, next) =
     else {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
-      console.log(photoUrl);
       const newUser = await User.create({ username, password: hashPass, photoUrl });
       req.session.currentUser = newUser;
       res
