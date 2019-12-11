@@ -10,6 +10,6 @@ const {
   } = require('../../helpers/middlewares');
 
 
-  router.use('/', isLoggedIn,validationGame, require('./game'));
+  router.use('/', isLoggedIn, require('./game'));
 
 module.exports = router;
