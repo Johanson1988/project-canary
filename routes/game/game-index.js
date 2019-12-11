@@ -9,6 +9,8 @@ const {
     validationGame
   } = require('../../helpers/middlewares');
 
+  router.use('/addplayer', require('./addplayer'));
+
 
   router.use('/', isLoggedIn, require('./game'));
 

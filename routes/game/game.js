@@ -14,10 +14,7 @@ const {
 router.get('/:_id', (req,res,next) => {
     const {_id} = req.params;
     Game.findOne({_id})
-        .then((gameFound) => {
-            console.log(gameFound)
-            res.status(200).json(gameFound);
-        })
+        .then((gameFound) => res.status(200).json(gameFound))
         .catch(err => res.status(400).json(err));
     
 });
