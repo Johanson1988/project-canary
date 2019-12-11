@@ -4,6 +4,7 @@ const createError = require('http-errors');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const User = require('../models/User');
+const parser = require('./../config/cloudinary');
 
 // HELPER FUNCTIONS
 const {
@@ -21,7 +22,7 @@ router.get('/me', isLoggedIn, (req, res, next) => {
 });
 
 //  POST    '/login'
-router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) => {
+router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) => {  
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username }) ;
@@ -46,9 +47,19 @@ router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) =>
 },
 );
 
+// upload Image
+router.post('/signup/image', parser.single('photo'), (req, res, next) => {
+  console.log('file upload');
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+  };
+  const imageUrl = req.file.secure_url;
+  res.json(imageUrl).status(200);
+});
+
 //  POST    '/signup'
 router.post('/signup', isNotLoggedIn, validationLoggin, async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password, photoUrl } = req.body;
 
   try {																									 // projection
     const usernameExists = await User.findOne({ username }, 'username');
@@ -57,7 +68,8 @@ router.post('/signup', isNotLoggedIn, validationLoggin, async (req, res, next) =
     else {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
-      const newUser = await User.create({ username, password: hashPass });
+      console.log(photoUrl);
+      const newUser = await User.create({ username, password: hashPass, photoUrl });
       req.session.currentUser = newUser;
       res
         .status(200)  //  OK
