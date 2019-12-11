@@ -9,8 +9,8 @@ const gameSchema = new Schema({
     winner: {type: mongoose.Schema.Types.ObjectId, ref: 'Player'},
     createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     //scoreboard: [{type:{playerName:{type:String, default: 'test'}, score:{type:Number, default:99}}], TODO check how to savethis
-    gameStarted: {type:Boolean} ,
-    gameFinished: {type:Boolean}
+    gameStarted: {type:Boolean, default:false} ,
+    gameFinished: {type:Boolean, default:false}
   }, {
     timestamps: {
       createdAt: 'created_at',
