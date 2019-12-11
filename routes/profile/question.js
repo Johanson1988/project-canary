@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const Question = require('../../models/Question');
+const parser = require('./../../config/cloudinary');
 
-// questionType: {type:String, enum:['data','webdev', 'ux'], required: true}, //TODO update readme name
-//     rightAnswer: {type: String, required: true},
-//     wrongAnswer1: {type:String, required: true}, //TODO update this on readme
-//     wrongAnswer2: {type:String, required: true},
-//     wrongAnswer3: {type:String, required: true},
-//     pictureUrl: {type:String},   //TODO make this required and update this on readme
-//     difficulty: {type:String, enum:[easy,hard], default:'easy'},
-//     created_by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
+router.post('/image',parser.single('photo'), (req, res, next) => { //TODO ADD route to readme
+    console.log(req.file);
+    if (!req.file) {
+      next(new Error('No file uploaded!'));
+    };
+    const imageUrl = req.file.secure_url;
+    res.json(imageUrl).status(200);
+  });
 
 router.post('/', (req,res,next) => {
     
