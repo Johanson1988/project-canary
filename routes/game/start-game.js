@@ -10,8 +10,6 @@ const {
     validationGame
   } = require('../../helpers/middlewares');
 
- 
-
 router.patch('/', (req,res,next) => { //TODO update route in readme
     const {gameId:_id} = req.body;    
     Game.updateOne({_id},{gameStarted:true})
