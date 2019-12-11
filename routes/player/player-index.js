@@ -9,7 +9,9 @@ const {
     validationGame
   } = require('../../helpers/middlewares');
 
+router.use('/addplayer/image', require('./add-image'));
 router.use('/addplayer', require('./add-player')); //TODO update this route in readme
+
 
 
 module.exports = router;

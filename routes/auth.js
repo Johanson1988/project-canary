@@ -48,7 +48,7 @@ router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) =>
 );
 
 // upload Image
-router.post('/signup/image',parser.single('photo'), (req, res, next) => {
+router.post('/signup/image', parser.single('photo'), (req, res, next) => {
   if (!req.file) {
     next(new Error('No file uploaded!'));
   };
