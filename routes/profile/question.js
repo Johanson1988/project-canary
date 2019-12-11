@@ -14,6 +14,7 @@ const Question = require('../../models/Question');
 router.post('/', (req,res,next) => {
     
     const newQuestion = req.body;
+    newQuestion.created_by = req.session.currentUser._id;
     Question.create(newQuestion)
         .then(() =>res.status(201).json())        
         .catch(err => res.status(400).json(err))
