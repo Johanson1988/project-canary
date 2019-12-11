@@ -4,9 +4,10 @@ const Schema = mongoose.Schema;
 const playerSchema = new Schema({
     username: {type: String, required: true}, //TODO update readme this field
     score: {type: Number, required:true},
-    userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     pictureURL: {type:String},
-    //client: Socket
+    socketId: {type:String},
+    gameId: {type: mongoose.Schema.Types.ObjectId, ref: 'Game'}
   }, {
     timestamps: {
       createdAt: 'created_at',
