@@ -8,7 +8,7 @@ const questionSchema = new Schema({
     wrongAnswer2: {type:String, required: true},
     wrongAnswer3: {type:String, required: true},
     pictureUrl: {type:String},   //TODO make this required and update this on readme
-    difficulty: {type:String, enum:[easy,hard], default:'easy'},
+    difficulty: {type:String, enum:['easy','hard'], default:'easy'},
     created_by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true} //Add this to readme
   }, {
     timestamps: {
