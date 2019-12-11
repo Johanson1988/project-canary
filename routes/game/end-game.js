@@ -2,14 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Game = require('../../models/Game');
 
-// HELPER FUNCTIONS
-const {
-    isLoggedIn,
-    isNotLoggedIn,
-    validationLoggin,
-    validationGame
-  } = require('../../helpers/middlewares');
-
 router.patch('/', (req,res,next) => { //TODO update route in readme
     const {gameId:_id} = req.body;
     Game.updateOne({_id},{gameFinished:true})

@@ -16,10 +16,10 @@ const {
 
 //		routes/auth.js
 
-//  GET    '/me'
-router.get('/me', isLoggedIn, (req, res, next) => {  
-  res.json(req.session.currentUser);
-});
+// //  GET    '/me'
+// router.get('/me', isLoggedIn, (req, res, next) => {  
+//   res.json(req.session.currentUser);
+// });
 
 //  POST    '/login'
 router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) => {  
@@ -90,14 +90,7 @@ router.post('/logout', isLoggedIn, (req, res, next) => {
   return; 
 });
 
-//		routes/auth.js
 
-//  GET    '/private'   --> Only for testing - Same as `/me` but it returns a message instead
-router.get('/private', isLoggedIn, (req, res, next) => {
-  res
-    .status(200)  // OK
-    .json({ message: 'Test - User is logged in'});
-});
 
 
 module.exports = router;  
