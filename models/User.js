@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 
 const userSchema = new Schema({
-  username: { type: String, required: true, unique:true},
+  email:{ type: String, required: true, unique:true},
+  username: { type: String, required: true},
   password: { type: String, required: true},
   gamesPlayed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game'}],
   bootcamp: { type: String, enum:['data','webdev', 'ux', 'other'], default: 'other'},

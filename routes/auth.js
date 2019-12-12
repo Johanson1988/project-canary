@@ -54,16 +54,16 @@ router.post('/signup/image', parser.single('photo'), (req, res, next) => {
 
 //  POST    '/signup'
 router.post('/signup', isNotLoggedIn, validationLoggin, async (req, res, next) => {
-  const { username, password, photoUrl } = req.body;
+  const { username, email, password, photoUrl } = req.body;
 
   try {																									 // projection
-    const usernameExists = await User.findOne({ username }, 'username');
+    const emailExists = await User.findOne({ email }, 'email');
     
-    if (usernameExists) return next(createError(400));
+    if (emailExists) return next(createError(400));
     else {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
-      const newUser = await User.create({ username, password: hashPass, photoUrl });
+      const newUser = await User.create({email,username, password: hashPass, photoUrl });
       req.session.currentUser = newUser;
       res
         .status(200)  //  OK

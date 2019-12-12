@@ -31,6 +31,7 @@ router.post('/update/image', parser.single('photo'), (req, res, next) => {
 
   
 router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with this values
+  console.log(req.body);
   const {username,oldpassword,password,photoUrl} = req.body;
   const updatedUser = {};
   const _id = req.session.currentUser._id;
