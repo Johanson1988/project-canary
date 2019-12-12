@@ -55,6 +55,14 @@ router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with
   User.updateOne({_id},updatedUser)
     .then( () =>res.status(200).send())
     .catch( err => res.status(400).json({message:'Username already in use',err}));
+});
+
+router.patch('/update/games-won', isLoggedIn, (req,res,next) => { //TODO update in readme
+  const {gamesWon} = req.body;
+  const _id = req.session.currentUser._id;
+  User.updateOne({_id},{gamesWon})
+    .then(() => res.status(200).send())
+    .catch(err => res.status(400).json(err));
 })
 
 module.exports = router;
