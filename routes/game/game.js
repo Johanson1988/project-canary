@@ -20,7 +20,8 @@ router.get('/:_id', (req,res,next) => {
 });
 
 router.post('/',validationGame, (req,res,next) => {
-    const { name, createdBy } = req.body;    
+    const { name } = req.body;
+    const createdBy = req.session.currentUser._id;    
     Game.create({name,createdBy})
         .then(() =>res.status(201).json())        
         .catch(err => res.status(400).json(err))    

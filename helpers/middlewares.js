@@ -18,8 +18,8 @@ exports.validationLoggin = (req, res, next) => {
 };
 
 exports.validationGame = (req, res, next) => {
-  const { name, createdBy } = req.body;
+  const { name } = req.body;
 
-  if (!name || !createdBy) next(createError(400));
+  if (!name) next(createError(400));
   else next();
 };
