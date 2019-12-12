@@ -30,18 +30,25 @@ router.post('/update/image', parser.single('photo'), (req, res, next) => {
 });
 
   
-router.put('/update', isLoggedIn, (req, res,next) => {
-  console.log(req.body);
+router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with this values
   const {username,password,photoUrl} = req.body;
-  if (!username) username = req.session.currentUser.username;
-  else req.session.currentUser.username = username;
-  if (!password) password = req.session.currentUser.password;
-  else req.session.currentUser.password = password;
-  if (!photoUrl) photoUrl = req.session.currentUser.photoUrl;
-  else req.session.currentUser.photoUrl = photoUrl;
+  const updatedUser = {};
+  if (username) {
+    updatedUser.username = username;
+    req.session.currentUser.username = username;
+  }
+  if (password) {
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashPass = bcrypt.hashSync(password, salt);
+    updatedUser.password = hashPass;
+  }
+  if (photoUrl) {
+    updatedUser.photoUrl = photoUrl;
+    req.session.currentUser.photoUrl = photoUrl;
+  }
   const _id = req.session.currentUser._id;
   
-  User.updateOne({_id},{username})
+  User.updateOne({_id},updatedUser)
     .then( () =>res.status(200).send())
     .catch( err => res.status(400).json({message:'Username already in use',err}));
 })
