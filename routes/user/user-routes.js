@@ -31,22 +31,26 @@ router.post('/update/image', parser.single('photo'), (req, res, next) => {
 
   
 router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with this values
-  const {username,password,photoUrl} = req.body;
+  const {username,oldpassword,password,photoUrl} = req.body;
   const updatedUser = {};
+  const _id = req.session.currentUser._id;
+  
+
   if (username) {
     updatedUser.username = username;
     req.session.currentUser.username = username;
   }
-  if (password) {
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hashPass = bcrypt.hashSync(password, salt);
-    updatedUser.password = hashPass;
+  if (password) {      
+    if (bcrypt.compareSync(oldpassword, req.session.currentUser.password)) {
+      const salt = bcrypt.genSaltSync(saltRounds);
+      const hashPass = bcrypt.hashSync(password, salt);
+      updatedUser.password = hashPass;
+    }else res.status(406).json("Old password doesn't match");
   }
   if (photoUrl) {
     updatedUser.photoUrl = photoUrl;
     req.session.currentUser.photoUrl = photoUrl;
   }
-  const _id = req.session.currentUser._id;
   
   User.updateOne({_id},updatedUser)
     .then( () =>res.status(200).send())
