@@ -9,7 +9,7 @@ const userSchema = new Schema({
   gamesPlayed: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game'}],
   bootcamp: { type: String, enum:['data','webdev', 'ux', 'other'], default: 'other'},
   gamesCreated : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game'}],
-  gamesWon : { type: Number, default: 0 },
+  gamesWon : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game'}],
   photoUrl: {type: 'String'}
 
 

@@ -31,7 +31,8 @@ router.post('/update/image', parser.single('photo'), (req, res, next) => {
 
   
 router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with this values
-  const {username,oldpassword,password,photoUrl} = req.body;
+  console.log(req.body);
+  const {username,email,oldpassword,password,photoUrl} = req.body;
   const updatedUser = {};
   const _id = req.session.currentUser._id;
   
@@ -51,6 +52,10 @@ router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with
     updatedUser.photoUrl = photoUrl;
     req.session.currentUser.photoUrl = photoUrl;
   }
+  if (email) {
+    updatedUser.email = email;
+    req.session.currentUser.email = email;
+  }
   
   User.updateOne({_id},updatedUser)
     .then( () =>res.status(200).send())
@@ -58,9 +63,12 @@ router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with
 });
 
 router.patch('/update/games-won', isLoggedIn, (req,res,next) => { //TODO update in readme
-  const {gamesWon} = req.body;
+  console.log(req.body)
+  const {gameId} = req.body;
   const _id = req.session.currentUser._id;
-  User.updateOne({_id},{gamesWon})
+  console.log()
+
+  User.updateOne({_id},{$push:{gamesWon:gameId}})
     .then(() => res.status(200).send())
     .catch(err => res.status(400).json(err));
 });
