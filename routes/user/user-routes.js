@@ -63,6 +63,17 @@ router.patch('/update/games-won', isLoggedIn, (req,res,next) => { //TODO update 
   User.updateOne({_id},{gamesWon})
     .then(() => res.status(200).send())
     .catch(err => res.status(400).json(err));
-})
+});
+
+router.patch('/update/games-played', isLoggedIn, (req,res,next) => { //TODO update in readme
+  const {gameId} = req.body;
+  const _id = req.session.currentUser._id;
+  //Game.updateOne({_id:player.gameId}, {$push:{players:player._id}})
+
+  User.updateOne({_id},{$push:{gamesWon:gameId}})
+    .then(() => res.status(200).send())
+    .catch(err => res.status(400).json(err));
+});
+
 
 module.exports = router;
