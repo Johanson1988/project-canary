@@ -86,7 +86,4 @@ router.post('/logout', isLoggedIn, (req, res, next) => {
   return; 
 });
 
-
-
-
 module.exports = router;  
