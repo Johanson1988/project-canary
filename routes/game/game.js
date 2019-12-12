@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Game = require('../../models/Game');
+const QRCode = require('qrcode');
 
 // HELPER FUNCTIONS
 const {
@@ -23,8 +24,16 @@ router.post('/',validationGame, (req,res,next) => {
     const { name } = req.body;
     const createdBy = req.session.currentUser._id;    
     Game.create({name,createdBy})
-        .then(() =>res.status(201).json())        
-        .catch(err => res.status(400).json(err))    
+    .then((createdGame) => {
+        QRCode.toDataURL('I am a pony!', (err, url) => {
+            console.log(url)
+          });
+        
+        res.status(201).send();
+        
+            
+    })  
+    .catch(err => res.status(400).json(err));
 });
 
 module.exports = router;
