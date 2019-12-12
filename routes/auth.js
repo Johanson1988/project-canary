@@ -20,9 +20,10 @@ router.get('/me', isLoggedIn, (req, res, next) => {
 
 //  POST    '/login'
 router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) => {  
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  console.log(email,password);
   try {
-    const user = await User.findOne({ username }) ;
+    const user = await User.findOne({ email }) ;
     if (!user) {
       next(createError(404));
     } 
