@@ -20,7 +20,11 @@ router.delete('/delete',isLoggedIn, (req,res,next) => { //TODO update route & bo
   
   router.put('/update', isLoggedIn, (req, res,next) => {
     console.log(req.body);
-    res.status(200).send();
+    const {username} = req.body;
+    const _id = req.session.currentUser._id;
+    
+    User.updateOne({_id},{username})
+      .then( () =>res.status(200).send())
   })
 
 module.exports = router;
