@@ -13,6 +13,11 @@ const {
   validationLoggin,
 } = require('../helpers/middlewares');
 
+//  GET    '/me'
+router.get('/me', isLoggedIn, (req, res, next) => {  
+  res.json(req.session.currentUser);
+});
+
 //  POST    '/login'
 router.post('/login', isNotLoggedIn, validationLoggin, async (req, res, next) => {  
   const { username, password } = req.body;
