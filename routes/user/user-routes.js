@@ -10,10 +10,17 @@ const {
   } = require('./../../helpers/middlewares');
 
 router.delete('/delete',isLoggedIn, (req,res,next) => { //TODO update route & body in readme
-  const {userId:_id} = req.query;
+  const _id = req.session.currentUser._id;
   User.deleteOne({_id})
-    .then(() => res.status(204).send())
-    .catch( err => res.status(400).json(err));  
+  .then(() => res.status(204).send())
+  .catch( err => res.status(400).json(err));  
+  req.session.destroy();
   });
+
+  
+  router.put('/update', isLoggedIn, (req, res,next) => {
+    console.log(req.body);
+    res.status(200).send();
+  })
 
 module.exports = router;
