@@ -7,7 +7,8 @@ const playerSchema = new Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     pictureURL: {type:String},
     socketId: {type:String},
-    gameId: {type: mongoose.Schema.Types.ObjectId, ref: 'Game'}
+    gameId: {type: mongoose.Schema.Types.ObjectId, ref: 'Game'},
+    bootcamp: { type: String, enum:['data','webdev', 'ux', 'other'], default: 'other'}
   }, {
     timestamps: {
       createdAt: 'created_at',
