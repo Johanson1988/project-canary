@@ -70,8 +70,9 @@ router.post('/',validationGame, (req,res,next) => {
                 QRCode.toDataURL('/game/' + _id, (err, qrCode) => {
                   if (!err) {                    
                     createdGame.qrCode = qrCode;
-                    Game.updateOne({_id}, {qrCode})
-                      .then(() =>res.status(201).json(createdGame))
+                    Game.findOneAndUpdate({_id}, {qrCode}, {new:true, useFindAndModify:false})
+                      .populate('questions')
+                      .then((updatedGame) =>res.status(201).json(updatedGame))
                       .catch(err => res.status(400).json(err));                    
                   }
                   else res.status(400).json(err);
