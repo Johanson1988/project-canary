@@ -27,7 +27,7 @@ router.post('/',validationGame, (req,res,next) => {
       webdevcheck:webDevCheck,
       datanylcheck:dataNylCheck,
       uxcheck:uxCheck,
-      name } = req.body;
+      name,gameStatus } = req.body;
     // try {
     //   if (!webDevCheck && !dataNylCheck && !uxCheck) throw 400;
     // }
@@ -64,17 +64,15 @@ router.post('/',validationGame, (req,res,next) => {
           });
           i++;
         }
-        console.log(finalQuestionsList);
-        Game.create({name,createdBy})
-          .then((createdGame) => {
-            QRCode.toDataURL('test address', (err, qrCode) => {
-            if (!err) {
-              res.status(201).json({qrCode,questions:['hola','adios']});
-            }
-            else res.status(400).json(err);
-            });                            
-          })  
-          .catch(err => res.status(400).json(err));
+
+        QRCode.toDataURL('test address', (err, qrCode) => {
+          if (!err) {
+            Game.create({name,createdBy,questions:finalQuestionsList,gameStatus,qrCode})
+              .then((createdGame) => res.status(201).json(createdGame))  
+              .catch(err => res.status(400).json(err));            
+          }
+          else res.status(400).json(err);
+          });         
       })
       .catch(err => console.log(err));
     
