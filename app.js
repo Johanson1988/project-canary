@@ -53,39 +53,30 @@ const server = http.createServer();
 
 io.attach(server);
 
-// dummy user verification
-async function verifyUser (token) {
+
+async function verifyPlayer (_id) {
+  const Player = require('./models/Player')
   return new Promise((resolve, reject) => {
     // setTimeout to mock a cache or database call
     setTimeout(() => {
       // this information should come from your cache or database
-      const users = [
-        {
-          id: 1,
-          name: 'mariotacke',
-          token: 'secret token',
-        },
-      ];
-
-      const user = users.find((user) => user.token === token);
-
-      if (!user) {
-        return reject('USER_NOT_FOUND');
-      }
-
-      return resolve(user);
+      
+      return Player.findOne({_id})
+        .then((playerFound) => resolve(playerFound))
+        .catch(() => reject('USER_NOT_FOUND'));            
     }, 200);
   });
 }
 
 socketAuth(io, {
   authenticate: async (socket, data, callback) => {
-    const { token } = data;
+    const { _id } = data;
 
     try {
-      const user = await verifyUser(token);
+      const player = await verifyPlayer(_id);
 
-      socket.user = user;
+      socket.user = player;
+      console.log(socket.user);
 
       return callback(null, true);
     } catch (e) {
@@ -99,7 +90,7 @@ socketAuth(io, {
   disconnect: (socket) => {
     console.log(`Socket ${socket.id} disconnected.`);
   },
-})
+});
 
 server.listen(PORT);
 
