@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const gameSchema = new Schema({
     name: {type:String, required:true},
-    qrCode: {type:String, required: true},
+    qrCode: {type:String},
     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question'}], //TODO do this required and populate when we have questions
     players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player'}],
     winner: {type: mongoose.Schema.Types.ObjectId, ref: 'Player'},

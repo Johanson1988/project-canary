@@ -64,15 +64,21 @@ router.post('/',validationGame, (req,res,next) => {
           });
           i++;
         }
-
-        QRCode.toDataURL('test address', (err, qrCode) => {
-          if (!err) {
-            Game.create({name,createdBy,questions:finalQuestionsList,gameStatus,qrCode})
-              .then((createdGame) => res.status(201).json(createdGame))  
+        Game.create({name,createdBy,questions:finalQuestionsList,gameStatus})
+              .then((createdGame) => {
+                const {_id} = createdGame;
+                QRCode.toDataURL('/game/' + _id, (err, qrCode) => {
+                  if (!err) {                    
+                    createdGame.qrCode = qrCode;
+                    Game.updateOne({_id}, {qrCode})
+                      .then(() =>res.status(201).json(createdGame))
+                      .catch(err => res.status(400).json(err));                    
+                  }
+                  else res.status(400).json(err);
+                  });                
+              })
               .catch(err => res.status(400).json(err));            
-          }
-          else res.status(400).json(err);
-          });         
+                 
       })
       .catch(err => console.log(err));
     
