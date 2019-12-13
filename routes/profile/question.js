@@ -12,12 +12,11 @@ router.post('/image',parser.single('photo'), (req, res, next) => { //TODO ADD ro
   });
 
 router.post('/', (req,res,next) => {
-    
-    const newQuestion = req.body;
-    newQuestion.created_by = req.session.currentUser._id;
-    Question.create(newQuestion)
-        .then(() =>res.status(201).json())        
-        .catch(err => res.status(400).json(err))
+  const newQuestion = req.body;
+  newQuestion.created_by = req.session.currentUser._id;
+  Question.create(newQuestion)
+      .then(() =>res.status(201).json())        
+      .catch(err => res.status(400).json(err))
 });
 
 module.exports = router;
