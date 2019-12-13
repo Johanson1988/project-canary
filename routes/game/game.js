@@ -60,10 +60,11 @@ router.post('/',validationGame, (req,res,next) => {
         const totalIterations = numberOfQuestions/data.length; 
         while (i<=totalIterations) {
           data.forEach(listOfQuestions => {
-            finalQuestionsList.push(listOfQuestions.splice(Math.random()*listOfQuestions.length,1));
+            finalQuestionsList.push((listOfQuestions.splice(Math.random()*listOfQuestions.length,1))[0]._id);
           });
           i++;
         }
+        console.log(finalQuestionsList);
         Game.create({name,createdBy})
           .then((createdGame) => {
             QRCode.toDataURL('test address', (err, qrCode) => {
