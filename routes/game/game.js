@@ -22,7 +22,6 @@ router.get('/:_id', (req,res,next) => {
 router.post('/',validationGame, (req,res,next) => {
     const Question = require('../../models/Question');
     const QRCode = require('qrcode');
-    console.log(req.body);
     const { numberofquestions:numberOfQuestions,
       webdevcheck:webDevCheck,
       datanylcheck:dataNylCheck,
