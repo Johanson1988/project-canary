@@ -75,8 +75,6 @@ socketAuth(io, {
       //cuando empiezas 
 
       socket.user = player;
-      console.log(socket.user);
-
       return callback(null, true);
     } catch (e) {
       console.log(`Socket ${socket.id} unauthorized.`);
@@ -86,12 +84,7 @@ socketAuth(io, {
   postAuthenticate: (socket) => {
     console.log(`Socket ${socket.id} authenticated.`);
     socket.join(socket.user.gameId);
-    io.of('/').in(socket.user.gameId).clients((error, data)=> {
-      if (error) throw error;
     
-      // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
-      console.log('cliente', data); 
-    });
     
   },
   disconnect: (socket) => {
