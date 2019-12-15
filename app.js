@@ -92,7 +92,7 @@ socketAuth(io, {
   },
 });
 
-
+io.on('connection', socket => socket.on('answer',  () => console.log('Answer received!!!')));
 
 server.listen(PORT);
 app.locals.io = io;

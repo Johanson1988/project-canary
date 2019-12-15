@@ -15,7 +15,9 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             currentGame.questions.forEach((question, firstIndex) => {
                 points.push([]);
                 currentGame.players.forEach((player, index) => points[firstIndex].push(index * 100 + 100));
-                });                            
+                });
+            Game.updateOne({_id}, {scoreboard:points})
+                .catch(err => res.status(400).json(err));                            
             console.log('Game Started: ', _id);
             io.to(_id).emit('game-started', {message:'The game has started'});
             // io.of('/').in(_id).clients((error, data)=> {
@@ -23,7 +25,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             //     // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
             //     console.log('cliente', data); 
             // });
-            let questionCounter = 500;
+            
             const intervalId = setInterval(() =>{                 
                 if (i >= currentGame.questions.length) {
                     console.log('clear timer');
