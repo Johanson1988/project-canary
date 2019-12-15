@@ -8,7 +8,7 @@ const gameSchema = new Schema({
     players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player'}],
     winner: {type: mongoose.Schema.Types.ObjectId, ref: 'Player'},
     createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-    //scoreboard: [{type:{playerName:{type:String, default: 'test'}, score:{type:Number, default:99}}], TODO check how to savethis
+    scoreboard: [],// TODO check how to savethis
     gameStatus: {type:String, enum:['waitingForPlayers','Running','Finished'], required:true}
   }, {
     timestamps: {
