@@ -48,6 +48,7 @@ const http = require('http');
 const io = require('socket.io')();
 const socketAuth = require('socketio-auth');
 
+
 const PORT = process.env.PORTSOCKET || 9000;
 const server = http.createServer();
 
@@ -56,15 +57,10 @@ io.attach(server);
 
 async function verifyPlayer (_id) {
   const Player = require('./models/Player')
-  return new Promise((resolve, reject) => {
-    // setTimeout to mock a cache or database call
-    setTimeout(() => {
-      // this information should come from your cache or database
-      
+  return new Promise((resolve, reject) => {    
       return Player.findOne({_id})
         .then((playerFound) => resolve(playerFound))
         .catch(() => reject('USER_NOT_FOUND'));            
-    }, 200);
   });
 }
 
@@ -79,7 +75,7 @@ socketAuth(io, {
       //cuando empiezas 
 
       socket.user = player;
-      
+      console.log(socket.user);
 
       return callback(null, true);
     } catch (e) {
@@ -89,13 +85,24 @@ socketAuth(io, {
   },
   postAuthenticate: (socket) => {
     console.log(`Socket ${socket.id} authenticated.`);
+    socket.join(socket.user.gameId);
+    io.of('/').in(socket.user.gameId).clients((error, data)=> {
+      if (error) throw error;
+    
+      // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
+      console.log('cliente', data); 
+    });
+    
   },
   disconnect: (socket) => {
     console.log(`Socket ${socket.id} disconnected.`);
   },
 });
 
+
+
 server.listen(PORT);
+app.locals.io = io;
 
 
 

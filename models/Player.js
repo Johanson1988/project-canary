@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const playerSchema = new Schema({
     username: {type: String, required: true}, //TODO update readme this field
-    score: {type: Number, required:true},
+    score: {type: Number},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     pictureURL: {type:String},
     socketId: {type:String},

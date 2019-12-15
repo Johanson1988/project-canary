@@ -66,7 +66,7 @@ router.post('/',validationGame, (req,res,next) => {
         Game.create({name,createdBy,questions:finalQuestionsList,gameStatus})
               .then((createdGame) => {
                 const {_id} = createdGame;
-                QRCode.toDataURL('/game/' + _id, (err, qrCode) => {
+                QRCode.toDataURL('localhost:3000/entername/id=' + _id, (err, qrCode) => {
                   if (!err) {                    
                     createdGame.qrCode = qrCode;
                     Game.findOneAndUpdate({_id}, {qrCode}, {new:true, useFindAndModify:false})
