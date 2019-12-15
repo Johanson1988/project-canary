@@ -74,9 +74,12 @@ socketAuth(io, {
 
     try {
       const player = await verifyPlayer(_id);
+      //add function isAdmin?
+      //listen to specific request
+      //cuando empiezas 
 
       socket.user = player;
-      console.log(socket.user);
+      
 
       return callback(null, true);
     } catch (e) {
