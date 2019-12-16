@@ -117,9 +117,9 @@ io.on('connection', socket =>{
 
   })
   socket.on('get-list-of-players', gameId => {
-    console.log('HERE')
-    io.of('/').in(gameId).clients((error, data)=> {
-      if (error) throw error;              
+    io.of('/').in(gameId).clients.user((error, data)=> {
+      if (error) throw error;
+
       // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
       console.log('player', data);
       socket.emit('send-list-of-players',data);
