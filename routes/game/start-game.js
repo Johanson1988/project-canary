@@ -31,8 +31,9 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                     console.log('clear timer');
                     clearInterval(intervalId);
                     return;
-                }                
-                io.to(_id).emit('new-question');                    
+                }
+                const {questions} = currentGame;
+                io.to(_id).emit('new-question', {question : questions[i]});                    
                 i++;
             },5000);
             res.status(200).send();
