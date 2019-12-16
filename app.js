@@ -91,8 +91,8 @@ socketAuth(io, {
 
 io.on('connection', socket => socket.on('answer',  (answer) => {
 
+  const {_id,gameId} = socket.user;
   if (answer.answerRight) {
-    const {_id,gameId} = socket.user;
     const {questionNumber} = answer;
     Game.findOne({_id:gameId})
       .then(gameFound => {
@@ -108,7 +108,13 @@ io.on('connection', socket => socket.on('answer',  (answer) => {
 
       })
       .catch(err => console.error(err));
-}}));
+  }else {
+    Player.findOneAndUpdate({_id},{$inc:{score:-100}},{new:true})
+      .then(playerFound => console.log(playerFound))
+      .catch(err => console.error(err));
+  }
+
+}));
 
 server.listen(PORT);
 app.locals.io = io;
