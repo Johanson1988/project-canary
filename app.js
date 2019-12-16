@@ -10,6 +10,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const Game = require('./models/Game');
+const Player = require('./models/Player');
 
 //const auth = require('./routes/auth');
 
@@ -33,7 +34,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN],
+    origin: [process.env.PUBLIC_DOMAIN,'https://iron-canary.herokuapp.com'],
   }),
 );
 // app.use((req, res, next) => {
@@ -58,7 +59,6 @@ io.attach(server);
 
 
 async function verifyPlayer (_id) {
-  const Player = require('./models/Player')
   return new Promise((resolve, reject) => {    
       return Player.findOne({_id})
         .then((playerFound) => resolve(playerFound))
@@ -97,14 +97,27 @@ io.on('connection', socket => socket.on('answer',  (answer) => {
     const {_id,gameId} = socket.user;
     const {questionNumber} = answer;
     //                Game.updateOne({_id:player.gameId}, {$push:{players:player._id}})
-
-    Game.findOne({_id:gameId})
+    //{'subjects.topics.modules.classes':{"$elemMatch":{'name':'Math'}}}]
+    Game.findOneAndUpdate({_id:gameId}, {'scoreboard.questionNumber':1})
       .then(gameFound => {
-        //console.log(gameFound.scoreboard[answer.questionNumber].pop());
+        console.log(gameFound.scoreboard[answer.questionNumber]);
         const score = gameFound.scoreboard[answer.questionNumber].pop();
-        gameFound.save();
+        console.log(gameFound.scoreboard[answer.questionNumber]);
+        gameFound.save()
+          .then (_ => {
+            Player.findOneAndUpdate({_id},{score},{new:true})
+              .then(playerFound =>{
+                console.log(playerFound);
+                socket.user = playerFound;
+              })
+              .catch(err => console.error(err));
+          })
+          .catch(err => console.error(err));
         
-        console.log(socket.user);
+
+        socket.user.score = score;
+        
+        //console.log(socket.user);
 
       })
       .catch(err => console.error(err));
@@ -147,12 +160,18 @@ const router = require('./routes/index');
 app.use('/', router);
 //app.use('/auth', auth); TODO Delete
 
+// ROUTE FOR SERVING REACT APP (index.html)
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 // ERROR HANDLING
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.status(404).json({ code: 'not found' });
 });
+
 
 app.use((err, req, res, next) => {
   // always log the error
