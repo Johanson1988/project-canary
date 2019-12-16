@@ -9,6 +9,8 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
+const Game = require('./models/Game');
+
 //const auth = require('./routes/auth');
 
 
@@ -70,9 +72,6 @@ socketAuth(io, {
 
     try {
       const player = await verifyPlayer(_id);
-      //add function isAdmin?
-      //listen to specific request
-      //cuando empiezas 
 
       socket.user = player;
       return callback(null, true);
@@ -92,7 +91,18 @@ socketAuth(io, {
   },
 });
 
-io.on('connection', socket => socket.on('answer',  () => console.log('Answer received!!!')));
+io.on('connection', socket => socket.on('answer',  (answer) => {
+  //if (answer.answerRight)
+  const {gameId, _id} = socket.user.gameId;
+  console.log(answer);
+  Game.findOne({_id})
+    .then(gameFound => {
+      console.log(gameFound.scoreboard);
+    })
+    .catch(err => res.status(400).json(err));
+  console.log(socket.user);
+  
+}));
 
 server.listen(PORT);
 app.locals.io = io;
