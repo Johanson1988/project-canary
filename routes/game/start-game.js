@@ -32,7 +32,6 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                     clearInterval(intervalId);
                     return;
                 }                
-                console.log('New question');                
                 io.to(_id).emit('new-question');                    
                 i++;
             },5000);

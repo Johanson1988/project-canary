@@ -89,7 +89,8 @@ socketAuth(io, {
   },
 });
 
-io.on('connection', socket => socket.on('answer',  (answer) => {
+io.on('connection', socket =>{
+  socket.on('answer',  (answer) => {
 
   const {_id,gameId} = socket.user;
   if (answer.answerRight) {
@@ -110,11 +111,22 @@ io.on('connection', socket => socket.on('answer',  (answer) => {
       .catch(err => console.error(err));
   }else {
     Player.findOneAndUpdate({_id},{$inc:{score:-100}},{new:true})
-      .then(playerFound => console.log(playerFound))
+      .then(playerFound => socket.user = playerFound)
       .catch(err => console.error(err));
   }
 
-}));
+  })
+  socket.on('get-list-of-players', gameId => {
+    console.log('HERE')
+    io.of('/').in(gameId).clients((error, data)=> {
+      if (error) throw error;              
+      // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
+      console.log('player', data);
+      socket.emit('send-list-of-players',data);
+  });
+  })
+
+});
 
 server.listen(PORT);
 app.locals.io = io;
