@@ -11,6 +11,7 @@ require('dotenv').config();
 
 const Game = require('./models/Game');
 const Player = require('./models/Player');
+const User = require('./models/User');
 
 
 // MONGOOSE CONNECTION
@@ -60,7 +61,11 @@ async function verifyPlayer (_id) {
   return new Promise((resolve, reject) => {    
       return Player.findOne({_id})
         .then((playerFound) => resolve(playerFound))
-        .catch(() => reject('USER_NOT_FOUND'));            
+        .catch(() => {
+          User.findOne({_id})
+            .then((userFound) => resolve(userFound))
+            .catch(reject('USER_NOT_FOUND'));
+        });
   });
 }
 
