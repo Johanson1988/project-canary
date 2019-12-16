@@ -45,6 +45,7 @@ app.use(
 // });
 
 //SOCKETS
+//SOCKETS
 
 const http = require('http');
 const io = require('socket.io')();
@@ -57,25 +58,31 @@ const server = http.createServer();
 io.attach(server);
 
 
-async function verifyPlayer (_id) {
-  return new Promise((resolve, reject) => {    
+async function verifyPlayer (_id,user) {
+  if (user) {
+    return new Promise((resolve, reject) => {    
+      return User.findOne({_id})
+        .then((playerFound) => resolve(playerFound))
+        .catch(() => reject('USER_NOT_FOUND'));            
+    });
+  }else {
+    return new Promise((resolve, reject) => {    
       return Player.findOne({_id})
         .then((playerFound) => resolve(playerFound))
-        .catch(() => {
-          User.findOne({_id})
-            .then((userFound) => resolve(userFound))
-            .catch(reject('USER_NOT_FOUND'));
-        });
+        .catch(() => reject('USER_NOT_FOUND'));            
   });
-}
+
+  }
+  }
 
 socketAuth(io, {
   authenticate: async (socket, data, callback) => {
-    const { _id } = data;
+    const { _id,user,gameId } = data;
+    console.log(data);
 
     try {
-      const player = await verifyPlayer(_id);
-
+      const player = await verifyPlayer(_id,user);
+      player.gameId = gameId;
       socket.user = player;
       return callback(null, true);
     } catch (e) {
@@ -132,7 +139,6 @@ io.on('connection', socket =>{
   })
 
 });
-
 server.listen(PORT);
 app.locals.io = io;
 
