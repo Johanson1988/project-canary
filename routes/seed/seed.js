@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const Question = require('./../../models/Question');
 require('dotenv').config();
 
-//process.env.MONGODB_URI
-
 
 
 const questions = [ { questionType: 'webdev',

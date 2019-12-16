@@ -16,6 +16,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                 points.push([]);
                 currentGame.players.forEach((player, index) => points[firstIndex].push(index * 100 + 100));
                 });
+                console.log(points);
             Game.updateOne({_id}, {scoreboard:points})
                 .catch(err => res.status(400).json(err));                            
             console.log('Game Started: ', _id);

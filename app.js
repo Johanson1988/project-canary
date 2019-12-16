@@ -12,8 +12,6 @@ require('dotenv').config();
 const Game = require('./models/Game');
 const Player = require('./models/Player');
 
-//const auth = require('./routes/auth');
-
 
 // MONGOOSE CONNECTION
 mongoose
@@ -92,39 +90,25 @@ socketAuth(io, {
 });
 
 io.on('connection', socket => socket.on('answer',  (answer) => {
-  //if answerRight do todo esto
+
   if (answer.answerRight) {
     const {_id,gameId} = socket.user;
     const {questionNumber} = answer;
-    //                Game.updateOne({_id:player.gameId}, {$push:{players:player._id}})
-    //{'subjects.topics.modules.classes':{"$elemMatch":{'name':'Math'}}}]
-    Game.findOneAndUpdate({_id:gameId}, {'scoreboard.questionNumber':1})
+    Game.findOne({_id:gameId})
       .then(gameFound => {
-        console.log(gameFound.scoreboard[answer.questionNumber]);
-        const score = gameFound.scoreboard[answer.questionNumber].pop();
-        console.log(gameFound.scoreboard[answer.questionNumber]);
-        gameFound.save()
-          .then (_ => {
-            Player.findOneAndUpdate({_id},{score},{new:true})
-              .then(playerFound =>{
-                console.log(playerFound);
-                socket.user = playerFound;
-              })
+        const {scoreboard} = gameFound;
+        let playerScore = scoreboard[questionNumber].pop();
+        Game.updateOne({_id:gameId},{scoreboard})
+          .then(() => {
+            Player.findOneAndUpdate({_id},{$inc:{score:playerScore}},{new:true})
+              .then(playerFound => socket.user = playerFound)
               .catch(err => console.error(err));
           })
-          .catch(err => console.error(err));
-        
-
-        socket.user.score = score;
-        
-        //console.log(socket.user);
+          .catch( err => console.error(err));
 
       })
       .catch(err => console.error(err));
-  
-  }
-  
-}));
+}}));
 
 server.listen(PORT);
 app.locals.io = io;
