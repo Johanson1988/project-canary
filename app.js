@@ -122,7 +122,7 @@ io.on('connection', socket =>{
 
   })
   socket.on('get-list-of-players', gameId => {
-    io.of('/').in(gameId).clients.user((error, data)=> {
+    io.of('/').in(gameId).clients((error, data)=> {
       if (error) throw error;
 
       // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
