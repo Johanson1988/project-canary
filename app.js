@@ -92,15 +92,24 @@ socketAuth(io, {
 });
 
 io.on('connection', socket => socket.on('answer',  (answer) => {
-  //if (answer.answerRight)
-  const {gameId, _id} = socket.user.gameId;
-  console.log(answer);
-  Game.findOne({_id})
-    .then(gameFound => {
-      console.log(gameFound.scoreboard);
-    })
-    .catch(err => res.status(400).json(err));
-  console.log(socket.user);
+  //if answerRight do todo esto
+  if (answer.answerRight) {
+    const {_id,gameId} = socket.user;
+    const {questionNumber} = answer;
+    //                Game.updateOne({_id:player.gameId}, {$push:{players:player._id}})
+
+    Game.findOne({_id:gameId})
+      .then(gameFound => {
+        //console.log(gameFound.scoreboard[answer.questionNumber].pop());
+        const score = gameFound.scoreboard[answer.questionNumber].pop();
+        gameFound.save();
+        
+        console.log(socket.user);
+
+      })
+      .catch(err => console.error(err));
+  
+  }
   
 }));
 
