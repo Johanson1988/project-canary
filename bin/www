@@ -103,10 +103,14 @@ io.on('connection', socket =>{
       .then(gameFound => {
         const {scoreboard} = gameFound;
         let playerScore = scoreboard[questionNumber].pop();
+        console.log()
         Game.updateOne({_id:gameId},{scoreboard})
           .then(() => {
             Player.findOneAndUpdate({_id},{$inc:{score:playerScore}},{new:true})
-              .then(playerFound => socket.user = playerFound)
+              .then(playerFound => {
+                socket.user = playerFound;
+                console.log(playerFound.username,playerScore);
+              })
               .catch(err => console.error(err));
           })
           .catch( err => console.error(err));
@@ -115,7 +119,10 @@ io.on('connection', socket =>{
       .catch(err => console.error(err));
   }else {
     Player.findOneAndUpdate({_id},{$inc:{score:-100}},{new:true})
-      .then(playerFound => socket.user = playerFound)
+      .then(playerFound => {
+        socket.user = playerFound;
+        console.log(playerFound.username,playerScore);
+      })
       .catch(err => console.error(err));
   }
 

@@ -33,6 +33,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             const intervalId = setInterval(() =>{                 
                 if (i >= currentGame.questions.length) {
                     console.log('clear timer');
+                    
                     io.to(_id).emit('show-results');
                     clearInterval(intervalId);
                     return;
