@@ -93,7 +93,9 @@ socketAuth(io, {
 
 io.on('connection', socket =>{
   socket.on('answer',  (answer) => {
-
+  console.log(`*************************************************
+  **************   ANSWER RECEIVED*******************************
+  *********************************************************`);
   const {_id,gameId} = socket.user;
   if (answer.answerRight) {
     const {questionNumber} = answer;
