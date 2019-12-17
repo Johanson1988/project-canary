@@ -8,11 +8,12 @@ var app = require('../app');
 var debug = require('debug')('boilerplate-codealong-server-starter-code:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '5000');
 app.set('port', port);
 
 /**
@@ -24,6 +25,116 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+
+//************************************** */
+const Game = require('./../models/Game');
+const Player = require('./../models/Player');
+const User = require('./../models/User');
+
+
+const socketIO = require('socket.io');
+const socketAuth = require('socketio-auth');
+
+//const server = http.createServer();
+
+
+
+
+
+//io.attach(server);
+const io = socketIO(server);
+
+
+async function verifyPlayer (_id,user) {
+  
+  if (user) {
+    return new Promise((resolve, reject) => {    
+      return User.findOne({_id})
+        .then((playerFound) => resolve(playerFound))
+        .catch(() => reject('USER_NOT_FOUND'));            
+    });
+  }else {
+    return new Promise((resolve, reject) => {    
+      return Player.findOne({_id})
+        .then((playerFound) => resolve(playerFound))
+        .catch(() => reject('USER_NOT_FOUND'));            
+  });
+
+  }
+  }
+
+socketAuth(io, {
+  authenticate: async (socket, data, callback) => {
+    const { _id,user,gameId } = data;
+    console.log(data);
+    console.log('ESTO',verifyPlayer);
+
+    try {
+      const player = await verifyPlayer(_id,user);
+      player.gameId = gameId;
+      socket.user = player;
+      return callback(null, true);
+    } catch (e) {
+      console.log(`Socket ${socket.id} unauthorized.`);
+      return callback({ message: 'UNAUTHORIZED' });
+    }
+  },
+  postAuthenticate: (socket) => {
+    console.log(`Socket ${socket.id} authenticated.`);
+    socket.join(socket.user.gameId);
+    
+    
+  },
+  disconnect: (socket) => {
+    console.log(`Socket ${socket.id} disconnected.`);
+  },
+});
+
+io.on('connection', socket =>{
+  socket.on('answer',  (answer) => {
+
+  const {_id,gameId} = socket.user;
+  if (answer.answerRight) {
+    const {questionNumber} = answer;
+    Game.findOne({_id:gameId})
+      .then(gameFound => {
+        const {scoreboard} = gameFound;
+        let playerScore = scoreboard[questionNumber].pop();
+        Game.updateOne({_id:gameId},{scoreboard})
+          .then(() => {
+            Player.findOneAndUpdate({_id},{$inc:{score:playerScore}},{new:true})
+              .then(playerFound => socket.user = playerFound)
+              .catch(err => console.error(err));
+          })
+          .catch( err => console.error(err));
+
+      })
+      .catch(err => console.error(err));
+  }else {
+    Player.findOneAndUpdate({_id},{$inc:{score:-100}},{new:true})
+      .then(playerFound => socket.user = playerFound)
+      .catch(err => console.error(err));
+  }
+
+  })
+  socket.on('get-list-of-players', gameId => {
+    io.of('/').in(gameId).clients((error, data)=> {
+      if (error) throw error;
+      const namesList = data.map(player =>io.sockets.connected[player].user.username);  
+      socket.emit('send-list-of-players',namesList);
+  });
+  })
+
+});
+
+
+
+
+//********************************************* */
+
+
+
 
 server.listen(port);
 server.on('error', onError);
