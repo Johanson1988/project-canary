@@ -24,7 +24,11 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             //     if (error) throw error;              
             //     // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
             //     console.log('cliente', data); 
-            // });
+            //  });
+            const {questions} = currentGame;
+            io.to(_id).emit('new-question', {question : questions[i]});
+                console.log(questions[i].question);
+                i++;
             
             const intervalId = setInterval(() =>{                 
                 if (i >= currentGame.questions.length) {
@@ -32,8 +36,9 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                     clearInterval(intervalId);
                     return;
                 }
-                const {questions} = currentGame;
-                io.to(_id).emit('new-question', {question : questions[i]});                    
+                
+                io.to(_id).emit('new-question', {question : questions[i]});
+                console.log(questions[i].question);
                 i++;
             },5000);
             res.status(200).send();
