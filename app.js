@@ -57,6 +57,7 @@ const server = http.createServer();
 
 io.attach(server);
 
+console.log('ESTO se LEE');
 
 async function verifyPlayer (_id,user) {
   if (user) {
