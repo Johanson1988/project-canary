@@ -495,7 +495,7 @@ photoUrl: 'photoUrl ux 59',
 created_by: '5df241030d13316631e8161d' } ];
 
 mongoose
-  .connect("mongodb://localhost:27017/canaryDDBB", {
+  .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
