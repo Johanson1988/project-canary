@@ -67,7 +67,7 @@ router.post('/',validationGame, (req,res,next) => {
               .then((createdGame) => {
                 const {_id} = createdGame;
                 //https://iron-canary.herokuapp.com
-                QRCode.toDataURL('http://localhost:3000/entername/id=' + _id, (err, qrCode) => {
+                QRCode.toDataURL('http://192.168.1.109:3000/entername/id=' + _id, (err, qrCode) => {
                   if (!err) {                    
                     createdGame.qrCode = qrCode;
                     Game.findOneAndUpdate({_id}, {qrCode}, {new:true, useFindAndModify:false})

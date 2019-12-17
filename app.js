@@ -33,7 +33,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN,'https://iron-canary.herokuapp.com'],
+    origin: [process.env.PUBLIC_DOMAIN,'https://iron-canary.herokuapp.com','http://192.168.1.109:3000'],
   }),
 );
 // app.use((req, res, next) => {
