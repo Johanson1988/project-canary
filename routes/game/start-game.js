@@ -31,7 +31,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                 i++;
             
             const intervalId = setInterval(() =>{                 
-                if (i >= currentGame.questions.length) {
+                if (i >= currentGame.questions.length-1) {
                     console.log('clear timer');
                     Game.findOne({_id})
                         .populate('players')  

@@ -96,6 +96,7 @@ io.on('connection', socket =>{
   console.log(`*************************************************
   **************   ANSWER RECEIVED*******************************
   *********************************************************`);
+  console.log(answer);
   const {_id,gameId} = socket.user;
   if (answer.answerRight) {
     const {questionNumber} = answer;
