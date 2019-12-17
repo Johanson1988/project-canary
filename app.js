@@ -81,6 +81,7 @@ socketAuth(io, {
     console.log(data);
 
     try {
+      console.log('Starting Sockets');
       const player = await verifyPlayer(_id,user);
       player.gameId = gameId;
       socket.user = player;
