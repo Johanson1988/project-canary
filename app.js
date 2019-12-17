@@ -33,7 +33,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN,'https://iron-canary.herokuapp.com','http://192.168.1.109:3000'],
+    origin: [process.env.PUBLIC_DOMAIN,'http://127.0.0.1:5000','https://iron-canary.herokuapp.com','http://192.168.1.109:3000'],
   }),
 );
 // app.use((req, res, next) => {
@@ -139,7 +139,7 @@ io.on('connection', socket =>{
   })
 
 });
-server.listen(PORT);
+//server.listen(PORT);
 app.locals.io = io;
 
 
