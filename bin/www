@@ -110,7 +110,7 @@ io.on('connection', socket =>{
             Player.findOneAndUpdate({_id},{$inc:{score:playerScore}},{new:true})
               .then(playerFound => {
                 socket.user = playerFound;
-                console.log(playerFound.username,playerScore);
+                //console.log(playerFound.username,playerScore);
               })
               .catch(err => console.error(err));
           })
@@ -122,7 +122,7 @@ io.on('connection', socket =>{
     Player.findOneAndUpdate({_id},{$inc:{score:-100}},{new:true})
       .then(playerFound => {
         socket.user = playerFound;
-        console.log(playerFound.username,' [-100]');
+        //console.log(playerFound.username,' [-100]');
       })
       .catch(err => console.error(err));
   }

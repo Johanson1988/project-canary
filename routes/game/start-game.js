@@ -37,6 +37,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                         .populate('players')  
                         .then(gameFound => {
                             io.to(_id).emit('show-results', gameFound.players);
+                            console.log(gameFound.players);
                             clearInterval(intervalId);
                             return;
                         })
