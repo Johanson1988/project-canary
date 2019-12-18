@@ -28,10 +28,9 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             const {questions} = currentGame;
             io.to(_id).emit('new-question', {question : questions[i]});
                 console.log(questions[i].question);
-                i++;
-            
+                i++;            
             const intervalId = setInterval(() =>{                 
-                if (i >= currentGame.questions.length-1) {
+                if (i >= currentGame.questions.length) {
                     console.log('clear timer');
                     Game.findOne({_id})
                         .populate('players')  
@@ -44,10 +43,8 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                         .catch(err => {
                             console.error(err);
                             clearInterval(intervalId);
-                        });
-                    
-                }
-                
+                        });                    
+                }                
                 io.to(_id).emit('new-question', {question : questions[i]});
                 console.log(questions[i].question);
                 i++;
