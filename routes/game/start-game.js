@@ -44,8 +44,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                             clearInterval(intervalId);
                         });                    
                 }                
-                io.to(_id).emit('new-question', {question : questions[i]});
-                console.log(questions[i].question);
+                io.to(_id).emit('new-question', {question : questions[i]});                
                 i++;
             },10000);
             res.status(200).send();
