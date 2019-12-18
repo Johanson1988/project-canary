@@ -26,8 +26,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             //     console.log('cliente', data); 
             //  });
             const {questions} = currentGame;
-            io.to(_id).emit('new-question', {question : questions[i]});
-                console.log(questions[i].question);
+            io.to(_id).emit('new-question', {question : questions[i]});                
                 i++;            
             const intervalId = setInterval(() =>{                 
                 if (i >= currentGame.questions.length) {
