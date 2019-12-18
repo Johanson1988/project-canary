@@ -46,7 +46,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
                 }                
                 io.to(_id).emit('new-question', {question : questions[i]});                
                 i++;
-            },10000);
+            },15000);
             res.status(200).send();
         })
         .catch(err => res.status(400).json(err));
