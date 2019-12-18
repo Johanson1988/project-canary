@@ -103,8 +103,7 @@ io.on('connection', socket =>{
     Game.findOne({_id:gameId})
       .then(gameFound => {
         const {scoreboard} = gameFound;
-        let playerScore = scoreboard[questionNumber].pop();
-        console.log()
+        let playerScore = scoreboard[questionNumber].pop();        
         Game.updateOne({_id:gameId},{scoreboard})
           .then(() => {
             Player.findOneAndUpdate({_id},{$inc:{score:playerScore}},{new:true})
