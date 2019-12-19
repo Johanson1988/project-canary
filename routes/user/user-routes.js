@@ -31,7 +31,6 @@ router.post('/update/image', parser.single('photo'), (req, res, next) => {
 
   
 router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with this values
-  console.log(req.body);
   const {username,email,oldpassword,password,photoUrl} = req.body;
   const updatedUser = {};
   const _id = req.session.currentUser._id;
@@ -63,10 +62,8 @@ router.put('/update', isLoggedIn, (req, res,next) => { //TODO update readme with
 });
 
 router.patch('/update/games-won', isLoggedIn, (req,res,next) => { //TODO update in readme
-  console.log(req.body)
   const {gameId} = req.body;
   const _id = req.session.currentUser._id;
-  console.log()
 
   User.updateOne({_id},{$push:{gamesWon:gameId}})
     .then(() => res.status(200).send())

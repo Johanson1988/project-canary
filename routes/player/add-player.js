@@ -4,7 +4,6 @@ const Game = require('./../../models/Game');
 const Player = require('./../../models/Player');
 
 router.post('/', (req,res,next) => {  //TODO update this route in readme merge both routes addplayer and patch player
-    console.log(req.body);
     const {player} = req.body;
     Game.findOne({_id:player.gameId})
         .then(() => {

@@ -67,8 +67,6 @@ async function verifyPlayer (_id,user) {
 socketAuth(io, {
   authenticate: async (socket, data, callback) => {
     const { _id,user,gameId } = data;
-    console.log(data);
-    console.log('ESTO',verifyPlayer);
 
     try {
       const player = await verifyPlayer(_id,user);
@@ -93,10 +91,6 @@ socketAuth(io, {
 
 io.on('connection', socket =>{
   socket.on('answer',  (answer) => {
-  console.log(`*************************************************
-  **************   ANSWER RECEIVED*******************************
-  *********************************************************`);
-  console.log(answer);
   const {_id,gameId} = socket.user;
   if (answer.answerRight) {
     const {questionNumber} = answer;
@@ -107,10 +101,7 @@ io.on('connection', socket =>{
         Game.updateOne({_id:gameId},{scoreboard})
           .then(() => {
             Player.findOneAndUpdate({_id},{$inc:{score:playerScore}},{new:true})
-              .then(playerFound => {
-                socket.user = playerFound;
-                //console.log(playerFound.username,playerScore);
-              })
+              .then(playerFound => socket.user = playerFound)
               .catch(err => console.error(err));
           })
           .catch( err => console.error(err));
@@ -121,7 +112,6 @@ io.on('connection', socket =>{
     Player.findOneAndUpdate({_id},{$inc:{score:-100}},{new:true})
       .then(playerFound => {
         socket.user = playerFound;
-        //console.log(playerFound.username,' [-100]');
       })
       .catch(err => console.error(err));
   }
@@ -131,11 +121,8 @@ io.on('connection', socket =>{
     io.of('/').in(gameId).clients((error, data)=> {
       if (error) throw error;
       const namesList = data.map(player =>io.sockets.connected[player].user.username);  
-      io.of('/').in(gameId).emit('send-list-of-players',namesList);
-      console.log(`*****************************************************************************
-                   *              LIST SEND!!!                                                 *
-                   *****************************************************************************`)
-  });
+      io.of('/').in(gameId).emit('send-list-of-players',namesList);      
+    });
   })
 
 });

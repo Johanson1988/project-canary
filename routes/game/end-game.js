@@ -10,13 +10,7 @@ router.patch('/', (req,res,next) => { //TODO update route in readme
             io.in(_id).clients((error, players) => {
                 if (error) throw error;              
                 players.forEach(player => io.sockets.sockets[player].leave(_id));              
-            });
-            io.of('/').in(_id).clients((error, data)=> {
-                if (error) throw error;              
-                // Returns an array of client IDs like ["Anw2LatarvGVVXEIAAAD"]
-                console.log('cliente', data); 
-            });
-              
+            });              
             res.status(200).send();
         })
         .catch(err => res.status(400).json(err));    
