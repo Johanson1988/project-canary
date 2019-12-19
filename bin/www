@@ -85,6 +85,11 @@ socketAuth(io, {
     
   },
   disconnect: (socket) => {
+    io.of('/').in(gameId).clients((error, data)=> {
+      if (error) throw error;
+      const namesList = data.map(player =>io.sockets.connected[player].user.username);  
+      io.of('/').in(gameId).emit('send-list-of-players',namesList);      
+    });
     console.log(`Socket ${socket.id} disconnected.`);
   },
 });
