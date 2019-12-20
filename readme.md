@@ -135,8 +135,8 @@ This is a live multiplayer game to prove the tech skills and knowledge gained du
 
 ```js
 {
-        Name: String,
-        GamesPlayed: [Game ObjectID],
+        userName: String,
+        gamesPlayed: [Game ObjectID],
         profilePic: String, //(cloudinary)
         bootcamp: enum[data,webdev,ux]
         gamesCreated: [Game ObjectID],
@@ -162,12 +162,13 @@ This is a live multiplayer game to prove the tech skills and knowledge gained du
 
 ```js
 {
-        type: enum[data,webdev,ux],
-        createdBy: User ObjectID,
-        rightAnswer: String,
-        wrongAnswers: [String],
-        picture: String, //(cloudinary)
-        BACKLOG(difficulty: enum[easy,hard])
+        question: String, required
+        questionType: enum[data,webdev,ux], required
+        createdBy: User ObjectID, required
+        rightAnswer: String, required
+        wrongAnswers: [String], required
+        picture: String, required //(cloudinary)
+        BACKLOG(difficulty: enum[easy,hard]), required
     }
 ```
 
@@ -175,9 +176,9 @@ This is a live multiplayer game to prove the tech skills and knowledge gained du
 
 ```js
 {
-        Name: String,
-        Score: Number,
-        UserID: User ObjectID //(if applicable)
+        username: String,
+        score: Number,
+        userID: User ObjectID //(if applicable)
         //BACKLOG picture: String (cloudinary)
         bootcamp: enum[data,webdev,ux,other],
         client: Socket Client Object //if we can
